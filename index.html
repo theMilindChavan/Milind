@@ -76,17 +76,33 @@
             border-radius: 2px;
         }
         
-    
+        .typing-container {
+            display: inline-block;
+            position: relative;
+        }
+        
+        .typing-text {
+            overflow: hidden;
+            border-right: 2px solid var(--primary);
+            white-space: nowrap;
+            display: inline-block;
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink {
+            50% { border-color: transparent }
+        }
            
         h6 {
-                
             font-size: 1.8rem;
             position: relative;
             margin-bottom: 1rem;
-                
             width: 100%;
         }
-       
 
         h6::after {
             content: '';
@@ -364,6 +380,7 @@
             background-color: var(--darker-bg);
             position: relative;
             text-align: center;
+            overflow: hidden;
         }
 
         #about::before {
@@ -990,16 +1007,21 @@
             .hero-image {
                 text-align: center;
                 margin-top: 2rem;
+                order: -1; /* Move image to top on mobile */
             }
 
             .hero-image img {
                 width: 280px;
             }
+            
+            /* Fix for about section overflow */
+            #about {
+                overflow: hidden;
+            }
         }
 
         @media (max-width: 768px) {
             h1 {
-                margin:50px;
                 font-size: 2.8rem;
             }
             
@@ -1151,6 +1173,16 @@
             .skill-icon {
                 font-size: 2.8rem;
             }
+            
+            /* Mobile hero layout - image on top */
+            .hero-container {
+                flex-direction: column;
+            }
+            
+            .hero-image {
+                order: -1;
+                margin-bottom: 2rem;
+            }
         }
 
         @media (max-width: 576px) {
@@ -1254,7 +1286,6 @@
 
         @media (max-width: 400px) {
             h1 {
-                margin:40px;
                 font-size: 2rem;
             }
             
@@ -1365,22 +1396,23 @@
     <!-- Hero Section -->
     <section id="hero" class="hero">
         <div class="container hero-container">
+            <div class="hero-image">
+                <div class="profile-image-container">
+                    <img src="pfp3.jpg" alt="Milind Chavan" class="profile-image">
+                </div>
+            </div>
+            
             <div class="hero-content">
-                <!-- <p class="hero-greeting">Hi, my name is</p> -->
                 <h1>Milind Dattatray <br> Chavan</h1> 
-                <h6 id="cd">Computer Engineer & Developer</h6>
+                <div class="typing-container">
+                    <h6 id="cd" class="typing-text">Computer Engineer & Developer</h6>
+                </div>
                 <p class="hero-description">
                     I'm a computer engineer specializing in building exceptional digital experiences. Currently, I'm focused on creating accessible, human-centered products.
                 </p>
                 <div class="cta-buttons">
                     <button class="btn btn-primary">Get In Touch</button>
                     <button class="btn btn-secondary">View My Work</button>
-                </div>
-            </div>
-
-            <div class="hero-image">
-                <div class="profile-image-container">
-                    <img src="pfp3.jpg" alt="Milind Chavan" class="profile-image">
                 </div>
             </div>
         </div>
@@ -1684,9 +1716,32 @@
             section.style.transition = 'opacity 0.5s ease-out, transform 0.5s ease-out';
             observer.observe(section);
         });
+        
+        // Typing animation for the title
+        function typeWriter(element, text, speed) {
+            let i = 0;
+            element.innerHTML = "";
+            
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                } else {
+                    // Keep the cursor blinking after finishing
+                    element.style.borderRight = "2px solid " + getComputedStyle(document.documentElement).getPropertyValue('--primary');
+                }
+            }
+            
+            type();
+        }
+        
+        // Start typing animation when page loads
+        window.addEventListener('DOMContentLoaded', (event) => {
+            const typingElement = document.querySelector('.typing-text');
+            const text = "Computer Engineer & Developer";
+            typeWriter(typingElement, text, 100);
+        });
     </script>
 </body>
 </html>
-
-
-
