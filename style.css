@@ -405,6 +405,7 @@
         }
 
         .about-text p {
+            font-size: 1.3rem;
             margin-bottom: 1.5rem;
             text-align: center;
             word-wrap: break-word;
@@ -1364,4 +1365,5 @@
             max-width: 100%;
             height: auto;
         }
+
     
